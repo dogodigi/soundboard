@@ -17,8 +17,7 @@ li {
   word-wrap: break-word;
   white-space: normal !important;
 }
-.playing { background-color: #4F0; }
-.paused { background-color: #F40; }
+
 .bs-glyphicons {
     margin: 0px -10px 20px;
     overflow: hidden;
@@ -45,7 +44,4 @@ li {
 }
 .bs-glyphicons-list {
     list-style: outside none none;
-}
-.bs-glyphicons li:hover{
-    color:#fff;
 }

@@ -6,49 +6,76 @@ soundboard.main = (function(window,document) {
   var _saveSounds = function() {
     $('li').each(function() {
       var name = $(this).text();
-      createjs.Sound.registerSound("/sounds/" + name, name);
+      var $this = $(this);
+      var index = $this.data("sound-index");
+      var path = $this.data("sound-path");
+      createjs.Sound.registerSound("/sounds/" + path, index);
+      _instances[index] = createjs.Sound.createInstance(index);
+      _instances[index].addEventListener('complete',
+        createjs.proxy(function() {
+          console.log("finished playing");
+          $this.removeClass("alert-warning alert-danger alert-success");
+          $this.children(".glyphicon")
+            .removeClass("glyphicon-play glyphicon-pause")
+            .addClass("glyphicon-stop");
+      }, this));
     });
   };
 
   var _bindClicks = function() {
     $('li').on('click', function() {
       var $this = $(this);
-      var name = $this.text();
-      
-      if($this.data('state') == 'playing') {
-        //pause
-        $this.removeClass('playing');
-        $this.addClass('paused');
-        $this.data('state', 'paused');
-        _instances[name].pause();
-      } else if($this.data('state') == 'paused') {
-        //play from pause
-        _instances[name].play();
-        $this.addClass('playing');
-        $this.removeClass('paused');
-        $this.data('state', 'playing');
-      } else {
-        //play from stop
-        $this.addClass('playing');
-        $this.data('state', 'playing');
-
-        _instances[name] = createjs.Sound.play(name);
-        _instances[name].addEventListener('complete', createjs.proxy(function() {
-          $this.data('state', 'ready');
-          $this.removeClass('playing');
-        }, this));
-      }
+      var index = $this.data("sound-index");
+      if (!_instances[index].playState ||
+        _instances[index].playState === createjs.Sound.PLAY_FINISHED) {
+        console.log("start play");
+        //not playing, start play
+				_instances[index].play();
+        //trackTime(name);
+        $this.removeClass("alert-warning alert-danger")
+          .addClass("alert-success");
+        $this.children(".glyphicon")
+          .removeClass("glyphicon-stop glyphicon-pause")
+          .addClass("glyphicon-play");
+				return;
+			}
+			if (_instances[index].paused) {
+        //if pause, then resume play
+        console.log("resume from pause");
+        _instances[index].play();
+        //trackTime(name);
+        $this.removeClass("alert-warning alert-danger")
+          .addClass("alert-success");
+        $this.children(".glyphicon")
+          .removeClass("glyphicon-stop glyphicon-pause")
+          .addClass("glyphicon-play");
+			} else {
+        //if playing then pause
+        console.log("pausing");
+        _instances[index].paused = true;
+        $this
+          .removeClass("alert-success alert-warning")
+          .addClass("alert-danger");
+        $this.children(".glyphicon")
+          .removeClass("glyphicon-stop glyphicon-play")
+          .addClass("glyphicon-pause");
+		  }
     });
-  }
+  };
+  function trackTime(name) {
+    setInterval(function (event) {
+      instance = _instances[name];
+		  console.log(instance.getPosition());
+      console.log(instance.getDuration());
+    }, 30);
+	}
 
   var self = {
     init: function() {
       _saveSounds();
       _bindClicks();
     }
-    
-  }
-
+  };
   return self;
 })(this,this.document);
 

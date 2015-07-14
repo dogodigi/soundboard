@@ -3,8 +3,8 @@ extends layout
 block content
   .bs-glyphicons
     ul.bs-glyphicons-list
-    each sound in sounds
-      li.btn
-        span.glyphicon.glyphicon-music
+    each sound, index in sounds
+      li.btn(data-sound-index= index, data-sound-path= sound.path)
+        span.glyphicon.glyphicon-stop
         span.glyphicon-class
-        = sound
+        = sound.name
