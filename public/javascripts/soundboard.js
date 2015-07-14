@@ -61,6 +61,13 @@ soundboard.main = (function(window,document) {
           .addClass("glyphicon-pause");
 		  }
     });
+    $('#filter').keyup(function () {
+        var filter = $("#filter").val();
+        $('.bs-glyphicons-list').each(function() {
+            $(this).find(".glyphicon-class:not(:contains('" + filter + "'))").parent().hide();
+            $(this).find(".glyphicon-class:contains('" + filter + "')").parent().show();
+        });
+    });
   };
   function trackTime(name) {
     setInterval(function (event) {

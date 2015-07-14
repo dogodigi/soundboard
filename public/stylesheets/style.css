@@ -34,6 +34,7 @@ li {
 .bs-glyphicons .glyphicon-class {
     display: block;
     text-align: center;
+    text-overflow: ellipsis;
     word-wrap: break-word;
 }
 .bs-glyphicons li {

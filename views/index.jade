@@ -1,10 +1,24 @@
 extends layout
 
 block content
+  input.form-control.filter#filter(type="text",name="filter")
   .bs-glyphicons
     ul.bs-glyphicons-list
-    each sound, index in sounds
-      li.btn(data-sound-index= index, data-sound-path= sound.path)
-        span.glyphicon.glyphicon-stop
-        span.glyphicon-class
-        = sound.name
+      each sound, index in sounds
+        if sound.picture
+          //- , style='background-image:url(' + sound.picture + ')')
+          li.btn.soundboard(data-sound-index= index, data-sound-path= sound.path)
+            span.glyphicon.glyphicon-stop
+            span.glyphicon-class
+              = sound.name
+            span.glyphicon-class
+              if sound.duration
+                = sound.duration
+        else
+          li.btn(data-sound-index= index, data-sound-path= sound.path)
+            span.glyphicon.glyphicon-stop
+            span.glyphicon-class
+              = sound.name
+            span.glyphicon-class
+              if sound.duration
+                = sound.duration
