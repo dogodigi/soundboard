@@ -67,6 +67,7 @@ soundboard.main = (function(window,document) {
             $(this).find(".glyphicon-class:not(:contains('" + filter + "'))").parent().hide();
             $(this).find(".glyphicon-class:contains('" + filter + "')").parent().show();
         });
+
     });
   };
   function trackTime(name) {
