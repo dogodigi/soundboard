@@ -8,12 +8,9 @@ a {
 }
 
 li {
-  background-color: #DDD;
   display: inline-block;
-  height: 120px;
-  margin: 10px;
+  margin: 5px;
   overflow: hidden;
-  width: 120px;
   word-wrap: break-word;
   white-space: normal !important;
 }
@@ -39,10 +36,22 @@ li {
 }
 .bs-glyphicons li {
     float: left;
-    width: 120px;
-    height: 120px;
+    width: 220px;
+    height: 220px;
 
 }
 .bs-glyphicons-list {
     list-style: outside none none;
+}
+
+.soundcard .panel-heading {
+  height: 80px;
+}
+
+.soundcard .panel-body {
+  height: 90px;
+}
+
+.soundcard .panel-footer {
+  height: 40px;
 }

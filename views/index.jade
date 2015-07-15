@@ -1,24 +1,29 @@
 extends layout
 
 block content
-  input.form-control.filter#filter(type="text",name="filter")
-  .bs-glyphicons
-    ul.bs-glyphicons-list
-      each sound, index in sounds
-        if sound.picture
-          //- , style='background-image:url(' + sound.picture + ')')
-          li.btn.soundboard(data-sound-index= index, data-sound-path= sound.path)
-            span.glyphicon.glyphicon-stop
-            span.glyphicon-class
-              = sound.name
-            span.glyphicon-class
-              if sound.duration
-                = sound.duration
-        else
-          li.btn(data-sound-index= index, data-sound-path= sound.path)
-            span.glyphicon.glyphicon-stop
-            span.glyphicon-class
-              = sound.name
-            span.glyphicon-class
-              if sound.duration
-                = sound.duration
+  .row
+    form.form-inline
+      .form-group
+        label(for='filter') Filter
+        input.form-control.filter#filter(type="text",name="filter")
+      button.btn.btn-default.btn-lg(type="button", disabled="disabled")
+        span.glyphicon.glyphicon-stop
+  .row
+    .bs-glyphicons
+      ul.soundul
+        each sound, index in sounds
+          li.soundboard
+            .panel.panel-default.soundcard
+              .panel-heading
+                .btn-group.soundcard-buttons(role="group", aria-label="...", data-sound-index= index, data-sound-path= sound.path)
+                  button.btn.btn-default.sound-play(type="button", title="play")
+                    span.glyphicon.glyphicon-play
+                  button.btn.btn-default.sound-loop(type="button", title="loop")
+                    span.glyphicon.glyphicon-repeat
+              .panel-body
+                = sound.name
+              .panel-footer
+                if sound.duration
+                  .progress
+                    .progress-bar(role="progressbar",aria-valuenow=sound.duration.val, aria-valuemin="0", aria-valuemax=sound.duration.val, style="width: 100%;")
+                      = sound.duration.label

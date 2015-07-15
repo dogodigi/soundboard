@@ -38,7 +38,10 @@ function parseFiles(paths, cb) {
               }
               sound.name = pth.name.replace(/_/g, ' ');
               sound.path = myFile.substring('public/sounds/'.length);
-              sound.duration = moment_sec;
+              sound.duration = {
+                "label": moment_sec,
+                "val": metadata.duration
+              }
               console.log(sound);
               sounds.push(sound);
             } else {
