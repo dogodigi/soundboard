@@ -5,15 +5,15 @@ block content
     form.form-inline
       .form-group
         label(for='filter') Filter
-        input.form-control.filter#filter(type="text",name="filter")
+        input.form-control.filter#soundboard-filter(type="text",name="filter")
       button.btn.btn-default.btn-lg(type="button", disabled="disabled")
         span.glyphicon.glyphicon-stop
   .row
     .bs-glyphicons
-      ul.soundul
+      ul#soundcards
         each sound, index in sounds
-          li.soundboard
-            .panel.panel-default.soundcard
+          li
+            .soundcard.panel.panel-default
               .panel-heading
                 .btn-group.soundcard-buttons(role="group", aria-label="...", data-sound-index= index, data-sound-path= sound.path)
                   button.btn.btn-default.sound-play(type="button", title="play")
@@ -24,6 +24,11 @@ block content
                 = sound.name
               .panel-footer
                 if sound.duration
+                  .progress-label
+                    = sound.duration.label
                   .progress
-                    .progress-bar(role="progressbar",aria-valuenow=sound.duration.val, aria-valuemin="0", aria-valuemax=sound.duration.val, style="width: 100%;")
-                      = sound.duration.label
+                    .progress-bar.soundcard-progress(role="progressbar",aria-valuenow="100", aria-valuemin="0", aria-valuemax="100", style="width: 100%;")
+                else
+                  .progress-label 00:00
+                  .progress
+                    .progress-bar.soundcard-progress(role="progressbar",aria-valuenow="0", aria-valuemin="0", aria-valuemax="0", style="width:100%;display:none;")

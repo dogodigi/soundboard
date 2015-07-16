@@ -19,29 +19,17 @@ li {
     margin: 0px -10px 20px;
     overflow: hidden;
 }
-.bs-glyphicons-list {
-    padding-left: 0px;
-    list-style: outside none none;
-}
+
 .bs-glyphicons .glyphicon {
     margin-top: 5px;
     margin-bottom: 10px;
     font-size: 24px;
 }
-.bs-glyphicons .glyphicon-class {
-    display: block;
-    text-align: center;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-}
+
 .bs-glyphicons li {
     float: left;
     width: 220px;
     height: 220px;
-
-}
-.bs-glyphicons-list {
-    list-style: outside none none;
 }
 
 .soundcard .panel-heading {
@@ -54,4 +42,12 @@ li {
 
 .soundcard .panel-footer {
   height: 40px;
+}
+
+.progress-bar {
+  transition: width 0s ease 0s !important;
+}
+.progress-label {
+    float: left;
+    margin-right: 10px;
 }
