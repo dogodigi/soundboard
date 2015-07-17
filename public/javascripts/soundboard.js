@@ -1,4 +1,18 @@
 var soundboard = soundboard || {};
+
+/**
+ * Soundboard layouts contain layouts defined for shortcuts
+ */
+soundboard.layout = {
+  "qwerty" : [
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+    "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
+    "a", "s", "d", "f", "g", "h", "j", "k", "l", ";",
+    "z", "x", "c", "v", "b", "n", "m", ",", "."
+    // slash cannot be used in firefox, "/"
+  ]
+};
+
 soundboard.main = (function(window,document) {
   var _sounds = [];
   var _instances = {};
@@ -11,6 +25,9 @@ soundboard.main = (function(window,document) {
       var path = $this.find(".soundcard-buttons").data("sound-path");
       createjs.Sound.registerSound("/sounds/" + path, index);
       _instances[index] = createjs.Sound.createInstance(index);
+
+      addShortcut($this.find(".soundcard-buttons"),index);
+
       _instances[index].addEventListener('complete',
         createjs.proxy(function() {
           $this.find(".sound-play").removeClass("alert-warning alert-danger alert-success");
@@ -38,7 +55,7 @@ soundboard.main = (function(window,document) {
       if (!_instances[index].playState ||
         _instances[index].playState === createjs.Sound.PLAY_FINISHED) {
           // SoundJS logic
-          var ppc = new createjs.PlayPropsConfig().set({loop: -1})
+          var ppc = new createjs.PlayPropsConfig().set({loop: -1});
           _instances[index].play(ppc);
           trackTime(index, $this.parent());
 
@@ -64,7 +81,7 @@ soundboard.main = (function(window,document) {
       if (!_instances[index].playState ||
         _instances[index].playState === createjs.Sound.PLAY_FINISHED) {
         // SoundJS logic
-        var ppc = new createjs.PlayPropsConfig().set({loop: 0})
+        var ppc = new createjs.PlayPropsConfig().set({loop: 0});
 				_instances[index].play(ppc);
         trackTime(index, $this.parent());
 
@@ -90,7 +107,10 @@ soundboard.main = (function(window,document) {
         _instances[index].stop();
 
         // Cosmetics
-        $this.removeClass("alert-success alert-warning alert-danger")
+        $this.parent().find('.sound-loop')
+          .prop('disabled', false)
+          .removeClass("alert-warning alert-success alert-danger");
+        $this.removeClass("alert-success alert-warning alert-danger");
         $this.children(".glyphicon")
           .removeClass("glyphicon-pause glyphicon-stop")
           .addClass("glyphicon-play");
@@ -114,12 +134,31 @@ soundboard.main = (function(window,document) {
      */
     $(".btn").mouseup(function(){
         $(this).blur();
-    })
+    });
   };
 
   /**
    * Helper functions
    */
+   function addShortcut(parent, index){
+     //check if the index exists in the layout, if so, add a shortcut button
+     if(soundboard.layout.qwerty[index]){
+       //console.log(index + " would get shortcut: " + soundboard.layout.qwerty[index]);
+       var shortcutbutton = $('<button/>');
+       shortcutbutton
+         .addClass('btn btn-default sound-shortcut')
+         .prop('title', 'shortcut')
+         .prop('disabled', true);
+       shortcutbutton.html('<span class="shortcut">' + soundboard.layout.qwerty[index] + '</span>');
+       parent.append(shortcutbutton);
+       Mousetrap.bind(soundboard.layout.qwerty[index], function(e){
+         parent.find('.sound-play').click();
+         console.log(e);
+       });
+     } else {
+       //console.log("No shortcut for " + index);
+     }
+   }
 
    function convertMS(ms) {
     if (ms < 0) {
@@ -137,7 +176,7 @@ soundboard.main = (function(window,document) {
     ms = parseInt(ms % 1000);
     //console.log({ d: d, h: h, m: m, s: s , ms: ms});
     return [pad(m), pad(s)].join(':');
-  };
+  }
 
   function trackTime(index, soundcard) {
     var ivID;

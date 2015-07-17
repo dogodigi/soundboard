@@ -41,7 +41,7 @@ function parseFiles(paths, cb) {
               sound.duration = {
                 "label": moment_sec,
                 "val": metadata.duration
-              }
+              };
               console.log(sound);
               sounds.push(sound);
             } else {

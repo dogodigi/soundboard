@@ -51,3 +51,18 @@ li {
     float: left;
     margin-right: 10px;
 }
+.shortcut{
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.sound-shortcut {
+  width: 50px;
+}
