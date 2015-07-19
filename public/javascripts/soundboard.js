@@ -2,6 +2,8 @@ var soundboard = soundboard || {};
 
 /**
  * Soundboard layouts contain layouts defined for shortcuts
+ * Currently contains only qwerty layout. Can be expanded to
+ * f.i. azerty
  */
 soundboard.layout = {
   "qwerty" : [
@@ -17,6 +19,9 @@ soundboard.main = (function(window,document) {
   var _sounds = [];
   var _instances = {};
 
+  /**
+   * Adds all the sounds available as soundcards
+   */
   var _saveSounds = function() {
     $('#soundcards > li').each(function() {
       var name = $(this).text();
@@ -70,7 +75,9 @@ soundboard.main = (function(window,document) {
     });
 
     /**
-     * Play button
+     * Play button.
+     *
+     * Play button is stop when playing.
      */
     $('.sound-play').on('click', function() {
       var $this = $(this);
@@ -118,7 +125,10 @@ soundboard.main = (function(window,document) {
     });
 
     /**
-     * Filter input
+     * Filter input.
+     *
+     * Checks to see if the track label in a soundcard matches user input.
+     * hides all the divs that do not match and only shows matching divs.
      */
     $('#soundboard-filter').keyup(function () {
         var filter = $("#soundboard-filter").val();
@@ -140,10 +150,17 @@ soundboard.main = (function(window,document) {
   /**
    * Helper functions
    */
+
+   /**
+    * Add a shortcut to the track from the soundboard.layout
+    * Currently takes the qwerty keyboard layout.
+    *
+    * If the index number is to high to fit the layout,
+    * No shortcut is set.
+    */
    function addShortcut(parent, index){
      //check if the index exists in the layout, if so, add a shortcut button
      if(soundboard.layout.qwerty[index]){
-       //console.log(index + " would get shortcut: " + soundboard.layout.qwerty[index]);
        var shortcutbutton = $('<button/>');
        shortcutbutton
          .addClass('btn btn-default sound-shortcut')
@@ -155,11 +172,12 @@ soundboard.main = (function(window,document) {
          parent.find('.sound-play').click();
          console.log(e);
        });
-     } else {
-       //console.log("No shortcut for " + index);
      }
    }
 
+   /**
+    * Convert Milliseconds into readable mm:ss label
+    */
    function convertMS(ms) {
     if (ms < 0) {
       return "00:00";
@@ -174,10 +192,13 @@ soundboard.main = (function(window,document) {
     h = h % 24;
     pad = pad = function(n){ return n < 10 ? '0' + n : n; };
     ms = parseInt(ms % 1000);
-    //console.log({ d: d, h: h, m: m, s: s , ms: ms});
     return [pad(m), pad(s)].join(':');
   }
 
+  /**
+   * Animate a progressbar to show the remaining time of a track.
+   * Reset when track reaches end.
+   */
   function trackTime(index, soundcard) {
     var ivID;
     var progressbar = $(soundcard).parent().parent().find(".progress-bar");
@@ -217,6 +238,9 @@ soundboard.main = (function(window,document) {
     }, 30);
 	}
 
+  /**
+   * Initialize the application
+   */
   var self = {
     init: function() {
       _saveSounds();
@@ -231,4 +255,6 @@ soundboard.main = (function(window,document) {
  */
 $(document).ready(function() {
   soundboard.main.init();
+  $('.sortable').sortable();
+
 });
